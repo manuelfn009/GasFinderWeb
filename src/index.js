@@ -55,7 +55,6 @@ async function getProvincia() {
 
 
     let provincias = data.length > 0 ? data : [];
-    console.log(data);
     provincias.forEach(provincia => {
         let id = provincia["IDPovincia"];
         let nombre = provincia["Provincia"];
@@ -109,22 +108,47 @@ async function getPetrolStations() {
     let res = await fetch(API);
     let data = await res.json();
     let gasofas = [];
-
+    console.log(data);
     let gasolineras = data.ListaEESSPrecio;
 
     gasolineras.forEach(gasolinera => {
         let price = gasolinera["Precio Gasolina 95 E5"];
         let direction = gasolinera["Dirección"];
         let priceDiesel = gasolinera["Precio Gasoleo A"];
+        let logo = gasolinera["Rótulo"];
         if (price == "") {
             return;
         }
 
         let priceParsed = parseFloat(price.replace(/,/g, "."));
         let priceDieselParsed = parseFloat(priceDiesel.replace(/,/g, "."));
-        let obj = { "price": priceParsed, "direction": direction, "priceDiesel": priceDieselParsed };
+        let obj = { "price": priceParsed, "direction": direction, "priceDiesel": priceDieselParsed, "logo": logo };
         gasofas.push(obj);
+
+        let latitude = gasolinera["Latitud"];
+        let latitudeParsed = parseFloat(latitude.replace(/,/g, "."));
+        let longitude = gasolinera["Longitud (WGS84)"];
+        let longitudeParsed = parseFloat(longitude.replace(/,/g, "."));
+        
+        let latitud = decimalToDMS(latitudeParsed);
+        let longitud = decimalToDMS(longitudeParsed);
+
+        // console.log(latitud, longitud);
+        // const watchID = navigator.geolocation.watchPosition((position) => {
+        //     doSomething(latitud, longitud);
+        //   });
+          
     });
+
+    function decimalToDMS(decimal) {
+        const degrees = Math.trunc(decimal); // Parte entera como grados
+        const minutesDecimal = Math.abs((decimal - degrees) * 60); // Minutos como valor decimal
+        const minutes = Math.trunc(minutesDecimal); // Parte entera como minutos
+        const seconds = ((minutesDecimal - minutes) * 60).toFixed(2); // Segundos con dos decimales
+    
+        return `${degrees}° ${minutes}' ${seconds}"`;
+    }
+    
 
     gasofas.sort((a, b) => a.price - b.price);
 
@@ -133,18 +157,32 @@ async function getPetrolStations() {
         let h2 = document.createElement("h2");
         let newPrice = gasolinera.price;
         let newPriceDiesel = gasolinera.priceDiesel;
+        let gasColor = "";
+        let gasColorDiesel = "";
+        
 
-        div.classList.add("flex", "flex-col", "items-center", "p-2", "text-gray-50", "bg-gray-800", "m-2", "w-50", "h-50", "rounded-lg");
+        div.classList.add("flex", "flex-col", "items-center", "p-2", "border-2", "border-gray-50", "text-gray-50", "bg-gray-800", "m-2", "w-50", "h-50", "rounded-lg");
 
         switch (true) {
             case (newPrice < 1.50):
-                div.classList.add("bg-green-400");
+                gasColor = "text-green-400";
                 break;
             case (newPrice >= 1.50 && newPrice < 1.60):
-                div.classList.add("bg-orange-400");
+                gasColor = "text-orange-400";
                 break;
             case (newPrice >= 1.60):
-                div.classList.add("bg-red-500");
+                gasColor = "text-red-500";
+                break;
+        }
+        switch (true) {
+            case (newPriceDiesel < 1.30):
+                gasColorDiesel = "text-green-400";
+                break;
+            case (newPriceDiesel >= 1.30 && newPriceDiesel < 1.40):
+                gasColorDiesel = "text-orange-400";
+                break;
+            case (newPriceDiesel >= 1.40):
+                gasColorDiesel = "text-red-500";
                 break;
         }
 
@@ -163,10 +201,11 @@ async function getPetrolStations() {
             h2.innerText = "No hay datos disponibles";
             container.appendChild(h2);
         } else {
-            div.innerHTML = ` <h1>${gasolinera.direction}: Gasolina: ${gasolinera.price}€/l ; Diesel: ${gasolinera.priceDiesel}€/l</h1>`;
+            div.innerHTML = ` <h1>${gasolinera.direction}:</h1>
+                                <li class="font-bold ${gasColor}"> Gasolina: ${gasolinera.price}€/l</li> 
+                                <li class="font-bold ${gasColorDiesel}"> Diesel: ${gasolinera.priceDiesel}€/l</li>
+                                <li>${gasolinera.logo}</li>`;
             container.appendChild(div);
         }
-        
-
     });
 }
