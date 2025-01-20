@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,25 +10,40 @@
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     <title>GasFinder</title>
 </head>
+
 <body class="bg-gray-900 text-gray-50 w-full h-full flex flex-col items-center mt-10">
     <h1 class="text-3xl font-bold uppercase">Gasolineras por precio ordenado</h1>
     <section>
-        <label  class="label p-2" for="CCAA">
-            <select name="CCAA" id="" class=" text-gray-50 CCAA py-2.5 px-0 text-sm  bg-gray-900 border-0 border-b-2 border-gray-50 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-black peer"> 
+        <label class="label p-2" for="CCAA">
+            <select name="CCAA" id=""
+                class=" text-gray-50 CCAA py-2.5 px-0 text-sm  bg-gray-900 border-0 border-b-2 border-gray-50 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-black peer">
                 <option value="" disabled selected>Comunidad Autónoma</option>
             </select>
         </label>
         <label class="label p-2" for="Provincia ">
-            <select name="Provincia" id="" class="Provincia py-2.5 px-0 text-sm text-gray-50 bg-gray-900 border-0 border-b-2 border-gray-50 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-black peer">
+            <select name="Provincia" id=""
+                class="Provincia py-2.5 px-0 text-sm text-gray-50 bg-gray-900 border-0 border-b-2 border-gray-50 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-black peer">
                 <option value="" disabled selected>Provincia</option>
             </select>
         </label>
         <label class="label p-2" for="Municipio">
-            <select name="Municipio" id="" class="Municipio py-2.5 px-0 text-sm text-gray-50 bg-gray-900 border-0 border-b-2 border-gray-50 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-black peer">
+            <select name="Municipio" id=""
+                class="Municipio py-2.5 px-0 text-sm text-gray-50 bg-gray-900 border-0 border-b-2 border-gray-50 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-black peer">
                 <option value="" disabled selected>Municipio</option>
+            </select>
+        </label>
+        <label class="label p-2" for="Orden">
+            <select name ="Orden" id=""
+                class=" text-gray-50 gasDie py-2.5 px-0 text-sm  bg-gray-900 border-0 border-b-2 border-gray-50 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-black peer">
+                <option value="" disabled selected>Ordenar por</option>
+                <option value="gasAsc">Gasolina (DESC) 🔽</option>
+                <option value="gasDesc">Gasolina (ASC) 🔼</option>
+                <option value="dieAsc">Diesel (DESC) 🔽</option>
+                <option value="dieDesc">Diesel (ASC) 🔼</option>
             </select>
         </label>
     </section>
     <div class="container flex flex-wrap items-center pt-2"></div>
 </body>
+
 </html>
