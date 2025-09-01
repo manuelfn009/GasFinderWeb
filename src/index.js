@@ -114,8 +114,10 @@ async function getPetrolStations() {
 
   gasolineras.forEach((gasolinera) => {
     let price = gasolinera["Precio Gasolina 95 E5"];
+    let priceGasolinaPlus = gasolinera["Precio Gasolina 98 E5"];
     let direction = gasolinera["Dirección"];
     let priceDiesel = gasolinera["Precio Gasoleo A"];
+    let priceDieselPlus = gasolinera["Precio Gasoleo Premium"];
     let logo = gasolinera["Rótulo"];
 
     if (price == "") {
@@ -123,11 +125,16 @@ async function getPetrolStations() {
     }
 
     let priceParsed = parseFloat(price.replace(/,/g, "."));
+    let priceGasolinaPlusParsed = parseFloat(priceGasolinaPlus.replace(/,/g, "."));
     let priceDieselParsed = parseFloat(priceDiesel.replace(/,/g, "."));
+    let priceDieselPlusParsed = parseFloat(priceDieselPlus.replace(/,/g, "."));
+
     let obj = {
       price: priceParsed,
+      priceGasolinaPlus: priceGasolinaPlusParsed,
       direction: direction,
       priceDiesel: priceDieselParsed,
+      priceDieselPlus: priceDieselPlusParsed,
       logo: logo,
     };
     gasofas.push(obj);
@@ -193,8 +200,10 @@ async function getPetrolStations() {
 
     div.innerHTML = `
       <h1>${gasolinera.direction}:</h1>
-      <li class="font-bold ${gasColor}">Gasolina: ${gasolinera.price}€/l</li> 
+      <li class="font-bold ${gasColor}">Gasolina: ${gasolinera.price}€/l</li>
+      <li class="font-bold ${gasColor}">Gasolina Plus: ${gasolinera.priceGasolinaPlus}€/l</li>
       <li class="font-bold ${gasColorDiesel}">Diesel: ${gasolinera.priceDiesel}€/l</li>
+      <li class="font-bold ${gasColorDiesel}">Diesel Plus: ${gasolinera.priceDieselPlus}€/l</li>
       <h2 class="font-bold">${gasolinera.logo}</h2>
     `;
     container.appendChild(div);
