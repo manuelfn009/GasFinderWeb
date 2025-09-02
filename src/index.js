@@ -114,11 +114,14 @@ async function getPetrolStations() {
 
   gasolineras.forEach((gasolinera) => {
     let price = gasolinera["Precio Gasolina 95 E5"];
-    let priceGasolinaPlus = gasolinera["Precio Gasolina 98 E5"];
+    let priceGasolinaPlus = gasolinera["Precio Gasolina 95 E5 Premium"];
     let direction = gasolinera["Dirección"];
     let priceDiesel = gasolinera["Precio Gasoleo A"];
     let priceDieselPlus = gasolinera["Precio Gasoleo Premium"];
+    let priceAdBlue = gasolinera["Precio Adblue"];
     let logo = gasolinera["Rótulo"];
+
+    console.log(gasolinera)
 
     if (price == "") {
       return;
@@ -128,6 +131,7 @@ async function getPetrolStations() {
     let priceGasolinaPlusParsed = parseFloat(priceGasolinaPlus.replace(/,/g, "."));
     let priceDieselParsed = parseFloat(priceDiesel.replace(/,/g, "."));
     let priceDieselPlusParsed = parseFloat(priceDieselPlus.replace(/,/g, "."));
+    let priceAdBlueParsed = parseFloat(priceAdBlue.replace(/,/g, "."));
 
     let obj = {
       price: priceParsed,
@@ -135,6 +139,7 @@ async function getPetrolStations() {
       direction: direction,
       priceDiesel: priceDieselParsed,
       priceDieselPlus: priceDieselPlusParsed,
+      priceAdBlue: priceAdBlueParsed,
       logo: logo,
     };
     gasofas.push(obj);
@@ -198,14 +203,22 @@ async function getPetrolStations() {
       "rounded-lg"
     );
 
+    // si no se encuentra el precio borrar la linea
+
     div.innerHTML = `
       <h1>${gasolinera.direction}:</h1>
-      <li class="font-bold ${gasColor}">Gasolina: ${gasolinera.price}€/l</li>
-      <li class="font-bold ${gasColor}">Gasolina Plus: ${gasolinera.priceGasolinaPlus}€/l</li>
-      <li class="font-bold ${gasColorDiesel}">Diesel: ${gasolinera.priceDiesel}€/l</li>
-      <li class="font-bold ${gasColorDiesel}">Diesel Plus: ${gasolinera.priceDieselPlus}€/l</li>
+      <li class="font-bold ${gasColor}">Gasolina: ${gasolinera.price ? gasolinera.price + "€/l" : "No disponible"}</li>
+      <li class="font-bold ${gasColor}">Gasolina Plus: ${gasolinera.priceGasolinaPlus ? gasolinera.priceGasolinaPlus + "€/l" : "No disponible"}</li>
+      <li class="font-bold ${gasColorDiesel}">Diesel: ${gasolinera.priceDiesel ? gasolinera.priceDiesel + "€/l" : "No disponible"}</li>
+      <li class="font-bold ${gasColorDiesel}">Diesel Plus: ${gasolinera.priceDieselPlus ? gasolinera.priceDieselPlus + "€/l" : "No disponible"}</li>
+      <li class="font-bold text-blue-400">AdBlue: ${gasolinera.priceAdBlue ? gasolinera.priceAdBlue + "€/l" : "No disponible"}</li>
       <h2 class="font-bold">${gasolinera.logo}</h2>
     `;
+    div.style.backgroundImage = `url(./src/img/${gasolinera.logo + ".png"})`;
+    div.style.backgroundSize = "contain";
+    div.style.backgroundRepeat = "no-repeat";
+    div.style.backgroundPosition = "center top";
+    console.log(`/src/img/${gasolinera.logo + ".png"}`);
     container.appendChild(div);
   });
 }
